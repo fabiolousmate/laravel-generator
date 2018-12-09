@@ -61,11 +61,20 @@ class GeneratorFieldsInputUtil
     public static function prepareKeyValueArrayStr($arr)
     {
         $arrStr = '[';
+/*
         foreach ($arr as $key => $item) {
             $arrStr .= "'$item' => '$key', ";
         }
 
         $arrStr = substr($arrStr, 0, strlen($arrStr) - 2);
+*/
+        if($arr) {
+          foreach ($arr as $key => $item) {
+              $arrStr .= "'$item' => '$key', ";
+          }
+
+          $arrStr = substr($arrStr, 0, strlen($arrStr) - 2);
+        }
 
         $arrStr .= ']';
 

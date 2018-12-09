@@ -40,6 +40,7 @@ trait Make$MODEL_NAME$Trait
     public function fake$MODEL_NAME$Data($$MODEL_NAME_CAMEL$Fields = [])
     {
         $fake = Faker::create();
+        $now = date("Y-m-d H:i:s");
 
         return array_merge([
             $FIELDS$

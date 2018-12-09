@@ -126,6 +126,7 @@ class GeneratorField
     {
         $field = new self();
         $field->name = $fieldInput['name'];
+        $field->fieldTitle = isset($fieldInput['fieldTitle']) ? $fieldInput['fieldTitle'] : Str::title(str_replace('_', ' ', $field->name));
         $field->parseDBType($fieldInput['dbType']);
         $field->parseHtmlInput(isset($fieldInput['htmlType']) ? $fieldInput['htmlType'] : '');
         $field->validations = isset($fieldInput['validations']) ? $fieldInput['validations'] : '';
@@ -138,6 +139,7 @@ class GeneratorField
         return $field;
     }
 
+/*
     public function __get($key)
     {
         if ($key == 'fieldTitle') {
@@ -146,4 +148,5 @@ class GeneratorField
 
         return $this->$key;
     }
+*/
 }

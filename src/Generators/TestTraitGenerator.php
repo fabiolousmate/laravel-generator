@@ -54,7 +54,7 @@ class TestTraitGenerator extends BaseGenerator
             if ($field->isPrimary) {
                 continue;
             }
-
+/*
             $fieldData = "'".$field->name."' => ".'$fake->';
 
             switch ($field->fieldType) {
@@ -81,6 +81,38 @@ class TestTraitGenerator extends BaseGenerator
             }
 
             $fieldData .= $fakerData;
+*/
+
+$reserved_fields = array("created_at", "updated_at", "deleted_at");
+if(in_array($field->name, $reserved_fields)) {
+  $fieldData = "'".$field->name."' => ".'$now';
+}
+else {
+  switch ($field->fieldType) {
+      case 'integer':
+      case 'float':
+          $fakerData = 'randomDigitNotNull';
+          break;
+      case 'string':
+          $fakerData = 'word';
+          break;
+      case 'text':
+          $fakerData = 'text';
+          break;
+      case 'datetime':
+          $fakerData = "date('Y-m-d H:i:s')";
+          break;
+      case 'enum':
+          $fakerData = 'randomElement('.
+              GeneratorFieldsInputUtil::prepareValuesArrayStr($field->htmlValues).
+              ')';
+          break;
+      default:
+          $fakerData = 'word';
+  }
+
+  $fieldData = "'".$field->name."' => ".'$fake->'.$fakerData;
+}
 
             $fields[] = $fieldData;
         }

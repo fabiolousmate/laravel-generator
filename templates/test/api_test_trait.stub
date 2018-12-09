@@ -2,21 +2,30 @@
 
 trait ApiTestTrait
 {
-    public function assertApiResponse(Array $actualData)
+//    public function assertApiResponse(Array $actualData)
+    public function assertApiResponse(Illuminate\Foundation\Testing\TestResponse $response, Array $actualData)
     {
-        $this->assertApiSuccess();
+//        $this->assertApiSuccess();
+        $this->assertApiSuccess($response);
 
-        $response = json_decode($this->response->getContent(), true);
+//        $response = json_decode($this->response->getContent(), true);
+        $response = json_decode($response->getContent(), true);
         $responseData = $response['data'];
 
         $this->assertNotEmpty($responseData['id']);
         $this->assertModelData($actualData, $responseData);
     }
 
-    public function assertApiSuccess()
+//    public function assertApiSuccess()
+    public function assertApiSuccess(Illuminate\Foundation\Testing\TestResponse $response)
     {
-        $this->assertResponseOk();
-        $this->seeJson(['success' => true]);
+/*        $this->assertResponseOk();
+        $this->seeJson(['success' => true]);*/
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+            ]);
     }
 
     public function assertModelData(Array $actualData, Array $expectedData)
