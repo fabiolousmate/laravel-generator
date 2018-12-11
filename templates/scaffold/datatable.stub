@@ -71,6 +71,7 @@ class $MODEL_NAME$DataTable extends DataTable
                 ],
             ]);*/
             ->parameters($parameters);
+        }
     }
 
     /**
