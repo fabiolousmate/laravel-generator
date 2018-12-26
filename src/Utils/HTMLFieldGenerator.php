@@ -25,13 +25,20 @@ class HTMLFieldGenerator
             case 'select':
             case 'enum':
                 $fieldTemplate = get_template('scaffold.fields.select', $templateType);
-                $radioLabels = GeneratorFieldsInputUtil::prepareKeyValueArrFromLabelValueStr($field->htmlValues);
+                $relationFound = preg_match('/(.*):foreign,([^,]*),/', $field->dbInput, $output_array);
+                if($relationFound === 1) {
+                  $replacement = 'isset($'.$output_array[2].') ? $'.$output_array[2].' : []';
+                  $fieldTemplate = str_replace('$INPUT_ARR$', $replacement, $fieldTemplate);
+                }
+                else {
+                  $radioLabels = GeneratorFieldsInputUtil::prepareKeyValueArrFromLabelValueStr($field->htmlValues);
 
-                $fieldTemplate = str_replace(
-                    '$INPUT_ARR$',
-                    GeneratorFieldsInputUtil::prepareKeyValueArrayStr($radioLabels),
-                    $fieldTemplate
-                );
+                  $fieldTemplate = str_replace(
+                      '$INPUT_ARR$',
+                      GeneratorFieldsInputUtil::prepareKeyValueArrayStr($radioLabels),
+                      $fieldTemplate
+                  );
+                }
                 break;
             case 'checkbox':
                 $fieldTemplate = get_template('scaffold.fields.checkbox', $templateType);
